@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NextJob.Api.Data;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
+using NextJob.Api.Services;
 
 
 
@@ -12,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Controllers
 builder.Services.AddControllers();
 
-// Swagger (opcional mas recomendado)
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -33,12 +34,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<AppDbContext>("Database");
 
+//ML.NET
+builder.Services.AddSingleton<MatchMlService>();
+
 
 // Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-// CORS (liberado para testes)
+// CORS 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -49,7 +53,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Tracing simples (X-Trace-Id)
+// Tracing simples
 app.Use(async (context, next) =>
 {
     var traceId = Guid.NewGuid().ToString();
@@ -73,5 +77,5 @@ app.MapControllers();
 
 app.Run();
 
-// Necessário para testes de integração com WebApplicationFactory
+
 public partial class Program { }

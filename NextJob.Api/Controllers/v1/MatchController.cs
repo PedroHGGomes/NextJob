@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextJob.Api.Data;
 using NextJob.Api.Model;
 using NextJob.Api.Model.Requests;
+using NextJob.Api.Services;
 using System;
 using System.Linq;
 
@@ -13,10 +14,12 @@ namespace NextJob.Api.Controllers.v1
     public class MatchController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly MatchMlService _matchMlService;
 
-        public MatchController(AppDbContext context)
+        public MatchController(AppDbContext context, MatchMlService matchMlService  )
         {
             _context = context;
+            _matchMlService = matchMlService;
         }
 
         // POST api/v1/Match
@@ -58,9 +61,15 @@ namespace NextJob.Api.Controllers.v1
             var desiredScore = CalcScore(candidate.TechnicalSkills, job.DesiredSkills);
             var softScore = CalcScore(candidate.SoftSkills, job.SoftSkills);
 
-            var total = requiredScore * 0.6 + desiredScore * 0.3 + softScore * 0.1;
+            var total = _matchMlService.PredictCompatibility(
+                requiredScore,
+                desiredScore,
+                softScore,
+                candidate.YearsOfExperience
+            );
 
-            // Recomendações "fake IA" (depois dá pra ligar com ML.NET/GPT se quiser)
+
+            //Recomendações
             var resumeSuggestions = "Reescreva suas experiências destacando resultados mensuráveis e usando palavras-chave da vaga.";
             var missingSkills = "Revise a seção de habilidades técnicas e adicione competências importantes que aparecem na vaga.";
             var recommendedCourses = "Sugestão: cursos de C# Avançado, Cloud Computing e Soft Skills de comunicação.";
