@@ -55,6 +55,7 @@ NextJob.Api/
 ├── Program.cs
 └── NextJob.Api.csproj
 Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa é a ideia geral.
+```
 
 ⚙️ Configuração de Ambiente
 🔑 Connection String Oracle
