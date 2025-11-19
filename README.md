@@ -210,17 +210,20 @@ ___________________________________________________________
 Arquivo: ML/MatchModelInput.cs
 
 public class MatchModelInput
+<br>
 {
-    public float RequiredSkillsScore { get; set; }
-    public float DesiredSkillsScore { get; set; }
-    public float SoftSkillsScore { get; set; }
-    public float YearsOfExperience { get; set; }
+    public float RequiredSkillsScore { get; set; }<br>
+    public float DesiredSkillsScore { get; set; }}<br>
+    public float SoftSkillsScore { get; set; }}<br>
+    public float YearsOfExperience { get; set; }}<br>
+}<br>
 }
 
 public class MatchModelOutput
 {
-    [ColumnName("Score")]
-    public float Score { get; set; }
+    [ColumnName("Score")]}<br>
+    public float Score { get; set; }}<br>
+}<br>
 }
 
 **🔗 Registro do Serviço no Program.cs**
