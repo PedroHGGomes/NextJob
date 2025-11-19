@@ -59,49 +59,40 @@ Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa 
 ⚙️ Configuração de Ambiente
 🔑 Connection String Oracle
 No appsettings.json (ou appsettings.Development.json), configure a connection string:
-
-json
-Copiar código
 {
   "ConnectionStrings": {
     "ConexaoOracle": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICO"
   }
 }
+
 O Program.cs usa essa connection string:
 
-csharp
-Copiar código
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
 );
+
+
 🌍 Ambiente (Development)
 No Properties/launchSettings.json, o ambiente padrão deve ser Development para habilitar o Swagger:
 
-json
-Copiar código
 "environmentVariables": {
   "ASPNETCORE_ENVIRONMENT": "Development"
 }
 🚀 Como Executar o Projeto
 Na pasta do projeto NextJob.Api:
 
-bash
-Copiar código
 dotnet restore
 dotnet build
 dotnet run
+
 Por padrão, a API sobe em uma porta configurada pelo Kestrel / launchSettings (por exemplo, http://localhost:5000).
 
 📚 Documentação via Swagger
 Quando a API está rodando em Development, o Swagger fica disponível em:
 
-text
-Copiar código
 http://localhost:PORTA/swagger
 O Swagger é configurado em Program.cs:
 
-csharp
-Copiar código
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -113,8 +104,6 @@ if (app.Environment.IsDevelopment())
 🧬 Versionamento da API
 O projeto utiliza Asp.Versioning para versionamento:
 
-csharp
-Copiar código
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -123,8 +112,6 @@ builder.Services.AddApiVersioning(options =>
 });
 Os controllers seguem o padrão:
 
-csharp
-Copiar código
 namespace NextJob.Api.Controllers.v1
 {
     [ApiController]
@@ -143,21 +130,16 @@ GET /api/v1/Match/{id}
 ❤️ Health Checks
 Health check básico para verificar se o banco Oracle está acessível:
 
-Configuração em Program.cs
-csharp
-Copiar código
+Configuração em Program.cs:
+
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<AppDbContext>("Database");
 Mapeamento do endpoint:
 
-csharp
-Copiar código
 app.MapHealthChecks("/health");
 Testando
 Com a API rodando:
 
-text
-Copiar código
 GET http://localhost:PORTA/health
 200 OK → aplicação e banco estão OK
 
@@ -185,8 +167,6 @@ Monta um pequeno dataset de treino em memória (List<MatchTrainingRow>)
 
 Usa um pipeline de regressão com:
 
-csharp
-Copiar código
 _mlContext.Transforms.Concatenate(
         "Features",
         nameof(MatchModelInput.RequiredSkillsScore),
@@ -202,8 +182,6 @@ Cria um PredictionEngine<MatchModelInput, MatchModelOutput>
 
 Exposição de método público:
 
-csharp
-Copiar código
 public float PredictCompatibility(
     double requiredScore,
     double desiredScore,
@@ -214,8 +192,6 @@ Esse método retorna um valor entre 0 e 100 representando a compatibilidade prev
 🧠 Modelo de Entrada/Saída de ML
 Arquivo: ML/MatchModelInput.cs
 
-csharp
-Copiar código
 public class MatchModelInput
 {
     public float RequiredSkillsScore { get; set; }
@@ -230,8 +206,7 @@ public class MatchModelOutput
     public float Score { get; set; }
 }
 🔗 Registro do Serviço no Program.cs
-csharp
-Copiar código
+
 builder.Services.AddSingleton<MatchMlService>();
 🎯 Endpoint de Cálculo de Compatibilidade (MatchController)
 Arquivo: Controllers/v1/MatchController.cs
@@ -263,8 +238,6 @@ Retorna 201 Created com links HATEOAS.
 
 Exemplo simplificado do uso do ML.NET dentro do controller:
 
-csharp
-Copiar código
 var requiredScore = CalcScore(candidate.TechnicalSkills, job.RequiredSkills);
 var desiredScore  = CalcScore(candidate.TechnicalSkills, job.DesiredSkills);
 var softScore     = CalcScore(candidate.SoftSkills, job.SoftSkills);
@@ -278,8 +251,6 @@ var total = _matchMlService.PredictCompatibility(
 🌐 CORS
 Para permitir que front-ends consumam a API (ex: React, Angular), foi configurado CORS liberando tudo:
 
-csharp
-Copiar código
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -292,14 +263,10 @@ app.UseCors("AllowAll");
 🔍 Observabilidade: Logging e Trace ID
 Logging configurado para console:
 
-csharp
-Copiar código
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 Middleware simples para adicionar um X-Trace-Id em todas as respostas:
 
-csharp
-Copiar código
 app.Use(async (context, next) =>
 {
     var traceId = Guid.NewGuid().ToString();
