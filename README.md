@@ -57,7 +57,7 @@ NextJob.Api/
 Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa é a ideia geral.
 ```
 
-⚙️ Configuração de Ambiente<br>
+**⚙️ Configuração de Ambiente**<br>
 
 🔑 Connection String Oracle<br>
 
@@ -75,16 +75,16 @@ builder.Services.AddDbContext<AppDbContext>(options =><br>
     options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))<br>
 );
 
-
-🌍 Ambiente (Development)<br>
+___________________________________________________________
+**🌍 Ambiente (Development)**<br>
 
 No Properties/launchSettings.json, o ambiente padrão deve ser Development para habilitar o Swagger:<br>
 
 "environmentVariables": {<br>
   "ASPNETCORE_ENVIRONMENT": "Development"<br>
 }<br>
-
-🚀 Como Executar o Projeto<br>
+___________________________________________________________
+**🚀 Como Executar o Projeto**<br>
 
 Na pasta do projeto NextJob.Api:
 
@@ -93,8 +93,8 @@ dotnet build<br>
 dotnet run
 
 Por padrão, a API sobe em uma porta configurada pelo Kestrel / launchSettings (por exemplo, http://localhost:5000).
-
-📚 Documentação via Swagger
+___________________________________________________________
+**📚 Documentação via Swagger**
 
 Quando a API está rodando em Development, o Swagger fica disponível em:
 
@@ -110,7 +110,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-🧬 Versionamento da API
+___________________________________________________________
+**🧬 Versionamento da API**
 
 O projeto utiliza Asp.Versioning para versionamento:
 
@@ -137,8 +138,8 @@ Exemplo de endpoint versionado:
 POST /api/v1/Match
 
 GET /api/v1/Match/{id}
-
-❤️ Health Checks<br>
+___________________________________________________________
+**❤️ Health Checks**<br>
 
 Health check básico para verificar se o banco Oracle está acessível:
 
@@ -157,8 +158,8 @@ GET http://localhost:PORTA/health
 200 OK → aplicação e banco estão OK
 
 Outro status → problema na conexão ou na aplicação
-
-🧠 Endpoint com ML.NET (Match de Candidato x Vaga)
+___________________________________________________________
+**🧠 Endpoint com ML.NET (Match de Candidato x Vaga)**
 <br>
 O projeto contém um serviço de ML.NET que prevê a compatibilidade entre um candidato e uma vaga usando:
 
@@ -169,8 +170,8 @@ Score de habilidades desejáveis (DesiredSkillsScore)
 Score de soft skills (SoftSkillsScore)
 
 Anos de experiência do candidato (YearsOfExperience)
-
-🧩 Serviço de ML: MatchMlService
+___________________________________________________________
+**🧩 Serviço de ML: MatchMlService**
 <br>
 Arquivo: Services/MatchMlService.cs
 
@@ -203,8 +204,8 @@ public float PredictCompatibility(
     double softScore,
     int yearsOfExperience)
 Esse método retorna um valor entre 0 e 100 representando a compatibilidade prevista.
-
-🧠 Modelo de Entrada/Saída de ML
+___________________________________________________________
+**🧠 Modelo de Entrada/Saída de ML**
 <br>
 Arquivo: ML/MatchModelInput.cs
 
@@ -221,11 +222,13 @@ public class MatchModelOutput
     [ColumnName("Score")]
     public float Score { get; set; }
 }
-🔗 Registro do Serviço no Program.cs
+
+**🔗 Registro do Serviço no Program.cs**
 
 builder.Services.AddSingleton<MatchMlService>();
+___________________________________________________________
 <br>
-🎯 Endpoint de Cálculo de Compatibilidade (MatchController)
+**🎯 Endpoint de Cálculo de Compatibilidade (MatchController)**
 <br>
 Arquivo: Controllers/v1/MatchController.cs
 
@@ -233,28 +236,29 @@ Rota: POST /api/v1/Match
 
 Fluxo principal:
 
-Recebe um MatchRequest com IDs de candidato e vaga.
+- Recebe um MatchRequest com IDs de candidato e vaga.
 
-Busca Candidate e JobOpening no banco via AppDbContext.
+- Busca Candidate e JobOpening no banco via AppDbContext.
 
-Calcula os scores textuais com uma função CalcScore, comparando textos de skills.
+- Calcula os scores textuais com uma função CalcScore, comparando textos de skills.
 
-Chama o ML.NET para prever o score final.
+- Chama o ML.NET para prever o score final.
 
-Persiste um MatchResult com:
+- Persiste um MatchResult com:
 
-RequiredSkillsScore
+- RequiredSkillsScore
 
-DesiredSkillsScore
+- DesiredSkillsScore
 
-SoftSkillsScore
+- SoftSkillsScore
 
-TotalCompatibility (resultado do ML.NET)
+- TotalCompatibility (resultado do ML.NET)
 
-Recomendações de currículo, skills, cursos e plano de carreira.
+- Recomendações de currículo, skills, cursos e plano de carreira.
 
-Retorna 201 Created com links HATEOAS.
+- Retorna 201 Created com links HATEOAS.
 
+___________________________________________________________
 Exemplo simplificado do uso do ML.NET dentro do controller:
 
 var requiredScore = CalcScore(candidate.TechnicalSkills, job.RequiredSkills);
@@ -267,8 +271,8 @@ var total = _matchMlService.PredictCompatibility(
     softScore,
     candidate.YearsOfExperience
 );
-
-🌐 CORS
+___________________________________________________________
+**🌐 CORS**
 <br>
 Para permitir que front-ends consumam a API (ex: React, Angular), foi configurado CORS liberando tudo:
 
@@ -282,8 +286,8 @@ builder.Services.AddCors(options =>
 
 app.UseCors("AllowAll");
 
-
-🔍 Observabilidade: Logging e Trace ID
+___________________________________________________________
+**🔍 Observabilidade: Logging e Trace ID**
 <br>
 Logging configurado para console:
 
