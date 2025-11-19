@@ -57,33 +57,33 @@ NextJob.Api/
 Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa é a ideia geral.
 ```
 
-⚙️ Configuração de Ambiente
-🔑 Connection String Oracle
-No appsettings.json (ou appsettings.Development.json), configure a connection string:
-{
-  "ConnectionStrings": {
-    "ConexaoOracle": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICO"
-  }
-}
+⚙️ Configuração de Ambiente<br>
+🔑 Connection String Oracle<br>
+No appsettings.json (ou appsettings.Development.json), configure a connection string:<br>
+{<br>
+  "ConnectionStrings": {<br>
+    "ConexaoOracle": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICO"<br>
+  }<br>
+}<br>
 
-O Program.cs usa essa connection string:
+O Program.cs usa essa connection string:<br>
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
+builder.Services.AddDbContext<AppDbContext>(options =><br>
+    options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))<br>
 );
 
 
-🌍 Ambiente (Development)
-No Properties/launchSettings.json, o ambiente padrão deve ser Development para habilitar o Swagger:
+🌍 Ambiente (Development)<br>
+No Properties/launchSettings.json, o ambiente padrão deve ser Development para habilitar o Swagger:<br>
 
-"environmentVariables": {
-  "ASPNETCORE_ENVIRONMENT": "Development"
-}
-🚀 Como Executar o Projeto
+"environmentVariables": {<br>
+  "ASPNETCORE_ENVIRONMENT": "Development"<br>
+}<br>
+🚀 Como Executar o Projeto<br>
 Na pasta do projeto NextJob.Api:
 
-dotnet restore
-dotnet build
+dotnet restore<br>
+dotnet build<br>
 dotnet run
 
 Por padrão, a API sobe em uma porta configurada pelo Kestrel / launchSettings (por exemplo, http://localhost:5000).
