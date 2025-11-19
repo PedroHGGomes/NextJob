@@ -211,7 +211,7 @@ Arquivo: ML/MatchModelInput.cs
 
 public class MatchModelInput
 <br>
-{
+{<br>
     public float RequiredSkillsScore { get; set; }<br>
     public float DesiredSkillsScore { get; set; }}<br>
     public float SoftSkillsScore { get; set; }}<br>
