@@ -58,11 +58,14 @@ Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa 
 ```
 
 ⚙️ Configuração de Ambiente<br>
+
 🔑 Connection String Oracle<br>
+
 No appsettings.json (ou appsettings.Development.json), configure a connection string:<br>
+
 {<br>
   "ConnectionStrings": {<br>
-    "ConexaoOracle": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICO"<br>
+    "ConexaoOracle": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=SEU_HOST:1521/SEU_SERVICO"
   }<br>
 }<br>
 
@@ -74,12 +77,15 @@ builder.Services.AddDbContext<AppDbContext>(options =><br>
 
 
 🌍 Ambiente (Development)<br>
+
 No Properties/launchSettings.json, o ambiente padrão deve ser Development para habilitar o Swagger:<br>
 
 "environmentVariables": {<br>
   "ASPNETCORE_ENVIRONMENT": "Development"<br>
 }<br>
+
 🚀 Como Executar o Projeto<br>
+
 Na pasta do projeto NextJob.Api:
 
 dotnet restore<br>
@@ -89,10 +95,12 @@ dotnet run
 Por padrão, a API sobe em uma porta configurada pelo Kestrel / launchSettings (por exemplo, http://localhost:5000).
 
 📚 Documentação via Swagger
+
 Quando a API está rodando em Development, o Swagger fica disponível em:
 
 http://localhost:PORTA/swagger
-O Swagger é configurado em Program.cs:
+
+O Swagger é configurado em Program.cs:<br>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -103,17 +111,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 🧬 Versionamento da API
+
 O projeto utiliza Asp.Versioning para versionamento:
 
 builder.Services.AddApiVersioning(options =>
 {
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);<br>
+    options.AssumeDefaultVersionWhenUnspecified = true;<br>
     options.ReportApiVersions = true;
 });
 Os controllers seguem o padrão:
 
 namespace NextJob.Api.Controllers.v1
+
 {
     [ApiController]
     [Route("api/v1/[controller]")]
@@ -128,7 +138,8 @@ POST /api/v1/Match
 
 GET /api/v1/Match/{id}
 
-❤️ Health Checks
+❤️ Health Checks<br>
+
 Health check básico para verificar se o banco Oracle está acessível:
 
 Configuração em Program.cs:
@@ -138,15 +149,17 @@ builder.Services.AddHealthChecks()
 Mapeamento do endpoint:
 
 app.MapHealthChecks("/health");
-Testando
-Com a API rodando:
+
+Testando Com a API rodando:<br>
 
 GET http://localhost:PORTA/health
+<br>
 200 OK → aplicação e banco estão OK
 
 Outro status → problema na conexão ou na aplicação
 
 🧠 Endpoint com ML.NET (Match de Candidato x Vaga)
+<br>
 O projeto contém um serviço de ML.NET que prevê a compatibilidade entre um candidato e uma vaga usando:
 
 Score de habilidades obrigatórias (RequiredSkillsScore)
@@ -158,6 +171,7 @@ Score de soft skills (SoftSkillsScore)
 Anos de experiência do candidato (YearsOfExperience)
 
 🧩 Serviço de ML: MatchMlService
+<br>
 Arquivo: Services/MatchMlService.cs
 
 Principais pontos:
@@ -191,6 +205,7 @@ public float PredictCompatibility(
 Esse método retorna um valor entre 0 e 100 representando a compatibilidade prevista.
 
 🧠 Modelo de Entrada/Saída de ML
+<br>
 Arquivo: ML/MatchModelInput.cs
 
 public class MatchModelInput
@@ -209,8 +224,11 @@ public class MatchModelOutput
 🔗 Registro do Serviço no Program.cs
 
 builder.Services.AddSingleton<MatchMlService>();
+<br>
 🎯 Endpoint de Cálculo de Compatibilidade (MatchController)
+<br>
 Arquivo: Controllers/v1/MatchController.cs
+
 Rota: POST /api/v1/Match
 
 Fluxo principal:
@@ -249,7 +267,9 @@ var total = _matchMlService.PredictCompatibility(
     softScore,
     candidate.YearsOfExperience
 );
+
 🌐 CORS
+<br>
 Para permitir que front-ends consumam a API (ex: React, Angular), foi configurado CORS liberando tudo:
 
 builder.Services.AddCors(options =>
@@ -261,7 +281,10 @@ builder.Services.AddCors(options =>
 });
 
 app.UseCors("AllowAll");
+
+
 🔍 Observabilidade: Logging e Trace ID
+<br>
 Logging configurado para console:
 
 builder.Logging.ClearProviders();
@@ -274,4 +297,5 @@ app.Use(async (context, next) =>
     context.Response.Headers.Append("X-Trace-Id", traceId);
     await next();
 });
+<br>
 Isso ajuda a rastrear requisições individualmente em logs.
