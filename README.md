@@ -54,7 +54,12 @@ NextJob.Api/
 │   └── launchSettings.json
 ├── Program.cs
 └── NextJob.Api.csproj
-Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa é a ideia geral.
+NextJob.Test/
+├── BasicIntegrationTests.cs
+├── MatchMlService.cs
+├── TestApplicationFactory.cs
+└── NextJob.Test.csproj
+
 ```
 
 **⚙️ Configuração de Ambiente**<br>
@@ -336,10 +341,37 @@ https://nextjob-1-qwwl.onrender.com/swagger
 ASPNETCORE_ENVIRONMENT = Production<br>
 
 <br>
-
+__________________________________________________________________________
 **Como testar**
-
+<br>
 - Acesse `/swagger` para visualizar a documentação completa.<br>
 
+
+Testes unitários (ML.NET)
+<br>
+Arquivo: NextJob.Tests/MatchMlServiceTests.cs
+<br>
+Garante que candidatos mais fortes têm score maior
+<br>
+Garante que o score sempre fica entre 0 e 100
+<br>
+Garante que o modelo é determinístico (mesma entrada → mesmo resultado)
+<br>
+Testes de integração (WebApplicationFactory)
+<br>
+Arquivo: NextJob.Tests/BasicIntegrationTests.cs
+<br>
+Usam WebApplicationFactory<Program> + TestApplicationFactory para:
+<br>
+Subir a API em memória usando banco InMemory
+<br>
+Verificar que o endpoint de Swagger existe:
+<br>
+GET /swagger/v1/swagger.json retorna 200
+<br>
+Verificar que o endpoint de HealthCheck existe:
+<br>
+GET /health não retorna 404
+<br>
 - Realize requisições HTTP diretamente pelos endpoints documentados.<br>
 
