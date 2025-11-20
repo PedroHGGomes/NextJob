@@ -46,7 +46,6 @@ else
 //ML.NET
 builder.Services.AddSingleton<MatchMlService>();
 
-
 // Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -84,19 +83,11 @@ else
 }
 
 
-if (!app.Environment.IsEnvironment("Testing"))
-{
-    app.UseHttpsRedirection();
-}
-
 
 app.UseCors("AllowAll");
-
-app.MapHealthChecks("/health");
 
 app.MapControllers();
 
 app.Run();
-
 
 public partial class Program { }

@@ -9,11 +9,6 @@ namespace NextJob.Tests
     {
         private readonly WebApplicationFactory<Program> _factory;
 
-        public BasicIntegrationTests(TestApplicationFactory factory)
-        {
-            _factory = factory;
-        }
-
         [Fact]
         public async Task SwaggerEndpoint_IsReachable()
         {
