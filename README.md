@@ -306,3 +306,25 @@ app.Use(async (context, next) =>
 });
 <br>
 Isso ajuda a rastrear requisições individualmente em logs.
+
+**Deploy da API**
+<br>
+A API está publicada na plataforma Render, em ambiente de produção.
+<br>
+**URL base**<br>
+https://nextjob-1-qwwl.onrender.com
+<br>
+**Swagger**<br>
+https://nextjob-1-qwwl.onrender.com/swagger
+<br>
+### Banco de Dados<br>
+- O banco Oracle utilizado por esta API roda localmente e **não é acessível externamente**.<br>
+- Por esse motivo, no ambiente online apenas endpoints que não dependem da base de dados funcionam.<br>
+<br>
+### Ambiente<br>
+ASPNETCORE_ENVIRONMENT = Production<br>
+<br>
+### Como testar
+- Acesse `/swagger` para visualizar a documentação completa.<br>
+- Realize requisições HTTP diretamente pelos endpoints documentados.<br>
+
