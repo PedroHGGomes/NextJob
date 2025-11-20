@@ -26,9 +26,21 @@ builder.Services.AddApiVersioning(options =>
 });
 
 // EF Core + Oracle
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
-);
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
+    );
+
+    builder.Services.AddHealthChecks()
+        .AddDbContextCheck<AppDbContext>("Database");
+}
+else
+{
+    
+    builder.Services.AddHealthChecks();
+}
 
 
 //ML.NET
@@ -58,8 +70,24 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseSwagger();
-app.UseSwaggerUI();
+// Swagger
+if (app.Environment.IsEnvironment("Testing"))
+{
+    // Apenas JSON no ambiente de teste
+    app.UseSwagger();
+}
+else
+{
+    // Swagger completo no dev/prod
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
 
 
 app.UseCors("AllowAll");
