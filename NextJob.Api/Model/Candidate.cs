@@ -8,13 +8,13 @@
 
         public string Email { get; set; } = string.Empty;
 
-        public string ResumeText { get; set; } = string.Empty; // Texto completo do currículo
+        public string ResumeText { get; set; } = string.Empty; 
 
-        public string TechnicalSkills { get; set; } = string.Empty; // Ex.: "C#, SQL, Azure"
+        public string TechnicalSkills { get; set; } = string.Empty; 
 
-        public string SoftSkills { get; set; } = string.Empty; // Ex.: "Comunicação, Liderança"
+        public string SoftSkills { get; set; } = string.Empty; 
 
-        public string Certifications { get; set; } = string.Empty; // Ex.: "AZ-900, AWS CCP"
+        public string Certifications { get; set; } = string.Empty;
 
         public int YearsOfExperience { get; set; }
 

@@ -2,15 +2,34 @@ using System;
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using NextJob.Api.Data;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.DependencyInjection;
 using NextJob.Api.Services;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Controllers
+// Log para conferir o que esta rodando
+Console.WriteLine($"Ambiente Atual: {builder.Environment.EnvironmentName}");
+
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    Console.WriteLine("Modo Normal");
+
+    // EF Core + Oracle em ambiente normal 
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
+    );
+
+    builder.Services.AddHealthChecks()
+        .AddDbContextCheck<AppDbContext>("Database");
+}
+else
+{
+    Console.WriteLine("Modo de Teste");
+
+    // Em Testing
+    builder.Services.AddHealthChecks();
+}
+
+
 builder.Services.AddControllers();
 
 // Swagger
@@ -25,32 +44,14 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true;
 });
 
-// EF Core + Oracle
-if (!builder.Environment.IsEnvironment("Testing"))
-{
-    
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
-    );
-
-    builder.Services.AddHealthChecks()
-        .AddDbContextCheck<AppDbContext>("Database");
-}
-else
-{
-    
-    builder.Services.AddHealthChecks();
-}
-
-
-//ML.NET
+// ML.NET
 builder.Services.AddSingleton<MatchMlService>();
 
 // Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-// CORS 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -70,24 +71,16 @@ app.Use(async (context, next) =>
 });
 
 // Swagger
-if (app.Environment.IsEnvironment("Testing"))
-{
-    // Apenas JSON no ambiente de teste
-    app.UseSwagger();
-}
-else
-{
-    // Swagger completo no dev/prod
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseSwagger();
+app.UseSwaggerUI();
 
 
 app.UseCors("AllowAll");
 
+app.MapHealthChecks("/health");
 app.MapControllers();
 
 app.Run();
 
+// Necessário para WebApplicationFactory<Program>
 public partial class Program { }

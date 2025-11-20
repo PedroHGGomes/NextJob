@@ -28,7 +28,7 @@ namespace NextJob.Tests
 
             Assert.InRange(low, 0, 100);
             Assert.InRange(high, 0, 100);
-            Assert.True(high > low); 
+            Assert.True(high > low);
         }
 
         [Fact]
@@ -50,7 +50,8 @@ namespace NextJob.Tests
             var s1 = _service.PredictCompatibility(70, 60, 80, 3);
             var s2 = _service.PredictCompatibility(70, 60, 80, 3);
 
-            Assert.Equal(s1, s2); 
+            Assert.Equal(s1, s2);
         }
     }
 }
+

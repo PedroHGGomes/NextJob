@@ -1,34 +1,35 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using NextJob.Api.Data;
 using System.Linq;
 
-public class TestApplicationFactory : WebApplicationFactory<Program>
+namespace NextJob.Tests
 {
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    public class TestApplicationFactory : WebApplicationFactory<Program>
     {
-        builder.UseEnvironment("Testing");
-
-        builder.ConfigureServices(services =>
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+            builder.UseEnvironment("Testing");
 
-            if (descriptor != null)
-                services.Remove(descriptor);
-
-            
-            services.AddDbContext<AppDbContext>(options =>
+            builder.ConfigureServices(services =>
             {
-                options.UseInMemoryDatabase("TestDb");
+                
+                var descriptor = services.SingleOrDefault(
+                    d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+
+                if (descriptor != null)
+                    services.Remove(descriptor);
+
+                
+                services.AddDbContext<AppDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase("TestDb");
+                });
             });
-        });
+        }
     }
 }
-
-
-
-
 

@@ -18,12 +18,12 @@ namespace NextJob.Api.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Tabelas com nomes Oracle-friendly (tudo maiúsculo)
+            // Tabelas com nomes Oracle
             modelBuilder.Entity<Candidate>().ToTable("CANDIDATE");
             modelBuilder.Entity<JobOpening>().ToTable("JOB_OPENING");
             modelBuilder.Entity<MatchResult>().ToTable("MATCH_RESULT");
 
-            // Exemplo: chaves estrangeiras para o MatchResult
+            // Exemplo
             modelBuilder.Entity<MatchResult>()
                 .HasOne(m => m.Candidate)
                 .WithMany()

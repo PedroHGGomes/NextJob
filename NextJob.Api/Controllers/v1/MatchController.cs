@@ -32,7 +32,7 @@ namespace NextJob.Api.Controllers.v1
             if (candidate == null || job == null)
                 return NotFound("Candidato ou Vaga não encontrados.");
 
-            // Função simples para calcular "match" entre listas de skills
+            // Função simples 
             double CalcScore(string candidateText, string jobText)
             {
                 if (string.IsNullOrWhiteSpace(candidateText) || string.IsNullOrWhiteSpace(jobText))

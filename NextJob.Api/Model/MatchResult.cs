@@ -11,11 +11,11 @@
         public JobOpening JobOpening { get; set; } = default!;
 
         // Pontuações calculadas
-        public double RequiredSkillsScore { get; set; } // 0–100
-        public double DesiredSkillsScore { get; set; }   // 0–100
-        public double SoftSkillsScore { get; set; }      // 0–100
+        public double RequiredSkillsScore { get; set; } 
+        public double DesiredSkillsScore { get; set; }   
+        public double SoftSkillsScore { get; set; }     
 
-        public double TotalCompatibility { get; set; }   // Peso 60/30/10
+        public double TotalCompatibility { get; set; }   
 
         public string ResumeSuggestions { get; set; } = string.Empty;
 
