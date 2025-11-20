@@ -30,9 +30,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("ConexaoOracle"))
 );
 
-// Health Checks (com EF Core)
-builder.Services.AddHealthChecks()
-    .AddDbContextCheck<AppDbContext>("Database");
 
 //ML.NET
 builder.Services.AddSingleton<MatchMlService>();
@@ -64,7 +61,6 @@ app.Use(async (context, next) =>
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
