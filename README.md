@@ -1,7 +1,7 @@
 # NextJob
 Projeto realizado para a entrega de C# - Global Solution
 
-# NextJob.Api 🧠💼
+# NextJob.Api 
 
 API RESTful em .NET 9 para gerenciamento de candidatos, vagas e cálculo de compatibilidade usando **ML.NET**, com foco em boas práticas REST, observabilidade e integrações modernas (Swagger, Health Checks, Versionamento, Oracle, etc.).
 
@@ -16,7 +16,7 @@ API RESTful em .NET 9 para gerenciamento de candidatos, vagas e cálculo de comp
 
 ---
 
-## 🏗️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **.NET 9** (ASP.NET Core Web API)
 - **C#**
@@ -31,7 +31,7 @@ API RESTful em .NET 9 para gerenciamento de candidatos, vagas e cálculo de comp
 
 ---
 
-## 📁 Estrutura Geral do Projeto
+## Estrutura Geral do Projeto
 
 ```text
 NextJob.Api/
@@ -59,7 +59,7 @@ Obs.: alguns nomes podem variar levemente dependendo da sua modelagem, mas essa 
 
 **⚙️ Configuração de Ambiente**<br>
 
-🔑 Connection String Oracle<br>
+Connection String Oracle<br>
 
 No appsettings.json (ou appsettings.Development.json), configure a connection string:<br>
 
@@ -76,7 +76,7 @@ builder.Services.AddDbContext<AppDbContext>(options =><br>
 );
 
 ___________________________________________________________
-**🌍 Ambiente (Development)**<br>
+**Ambiente (Development)**<br>
 
 No Properties/launchSettings.json, o ambiente padrão deve ser Development para habilitar o Swagger:<br>
 
@@ -84,7 +84,7 @@ No Properties/launchSettings.json, o ambiente padrão deve ser Development para 
   "ASPNETCORE_ENVIRONMENT": "Development"<br>
 }<br>
 ___________________________________________________________
-**🚀 Como Executar o Projeto**<br>
+** Como Executar o Projeto**<br>
 
 Na pasta do projeto NextJob.Api:
 
@@ -94,7 +94,7 @@ dotnet run
 
 Por padrão, a API sobe em uma porta configurada pelo Kestrel / launchSettings (por exemplo, http://localhost:5000).
 ___________________________________________________________
-**📚 Documentação via Swagger**
+**Documentação via Swagger**
 
 Quando a API está rodando em Development, o Swagger fica disponível em:
 
@@ -111,7 +111,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 ___________________________________________________________
-**🧬 Versionamento da API**
+**Versionamento da API**
 
 O projeto utiliza Asp.Versioning para versionamento:
 
@@ -139,7 +139,7 @@ POST /api/v1/Match
 
 GET /api/v1/Match/{id}
 ___________________________________________________________
-**❤️ Health Checks**<br>
+** Health Checks**<br>
 
 Health check básico para verificar se o banco Oracle está acessível:
 
@@ -159,7 +159,7 @@ GET http://localhost:PORTA/health
 
 Outro status → problema na conexão ou na aplicação
 ___________________________________________________________
-**🧠 Endpoint com ML.NET (Match de Candidato x Vaga)**
+**Endpoint com ML.NET (Match de Candidato x Vaga)**
 <br>
 O projeto contém um serviço de ML.NET que prevê a compatibilidade entre um candidato e uma vaga usando:
 
@@ -171,7 +171,7 @@ Score de soft skills (SoftSkillsScore)
 
 Anos de experiência do candidato (YearsOfExperience)
 ___________________________________________________________
-**🧩 Serviço de ML: MatchMlService**
+** Serviço de ML: MatchMlService**
 <br>
 Arquivo: Services/MatchMlService.cs
 
@@ -205,7 +205,7 @@ public float PredictCompatibility(
     int yearsOfExperience)
 Esse método retorna um valor entre 0 e 100 representando a compatibilidade prevista.
 ___________________________________________________________
-**🧠 Modelo de Entrada/Saída de ML**
+** Modelo de Entrada/Saída de ML**
 <br>
 Arquivo: ML/MatchModelInput.cs
 
@@ -231,7 +231,7 @@ public class MatchModelOutput
 builder.Services.AddSingleton<MatchMlService>();
 ___________________________________________________________
 <br>
-**🎯 Endpoint de Cálculo de Compatibilidade (MatchController)**
+**Endpoint de Cálculo de Compatibilidade (MatchController)**
 <br>
 Arquivo: Controllers/v1/MatchController.cs
 
@@ -275,8 +275,9 @@ var total = _matchMlService.PredictCompatibility(
     candidate.YearsOfExperience
 );
 ___________________________________________________________
-**🌐 CORS**
+** CORS**
 <br>
+
 Para permitir que front-ends consumam a API (ex: React, Angular), foi configurado CORS liberando tudo:
 
 builder.Services.AddCors(options =>
@@ -290,8 +291,9 @@ builder.Services.AddCors(options =>
 app.UseCors("AllowAll");
 
 ___________________________________________________________
-**🔍 Observabilidade: Logging e Trace ID**
+**Observabilidade: Logging e Trace ID**
 <br>
+
 Logging configurado para console:
 
 builder.Logging.ClearProviders();
@@ -306,7 +308,7 @@ app.Use(async (context, next) =>
 });
 <br>
 Isso ajuda a rastrear requisições individualmente em logs.
-
+___________________________________________________________
 **Deploy da API**
 <br>
 A API está publicada na plataforma Render, em ambiente de produção.
