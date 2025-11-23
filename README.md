@@ -1,5 +1,9 @@
-# NextJob
-Projeto realizado para a entrega de C# - Global Solution
+Participantes
+Pedro Gomes - RM 553907
+Luiz Felipe Abreu - RM 555197
+Matheus Munuera - RM 557812
+
+___________________________________________________________
 
 # NextJob.Api 
 
