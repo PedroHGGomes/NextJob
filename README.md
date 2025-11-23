@@ -115,6 +115,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+Exemplo visual:
+<img width="1181" height="790" alt="image" src="https://github.com/user-attachments/assets/83012c69-e987-4c95-a035-b81644d8c925" />
+
+
+Schemas:
+<img width="1179" height="732" alt="image" src="https://github.com/user-attachments/assets/35515d05-0c42-4486-8397-71a8f88cb615" />
+
 ___________________________________________________________
 **Versionamento da API**
 
@@ -126,6 +134,7 @@ builder.Services.AddApiVersioning(options =>
     options.AssumeDefaultVersionWhenUnspecified = true;<br>
     options.ReportApiVersions = true;
 });
+
 Os controllers seguem o padrão:
 
 namespace NextJob.Api.Controllers.v1
