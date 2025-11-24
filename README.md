@@ -140,6 +140,12 @@ NextJob.Test/
 └── NextJob.Test.csproj
 
 ```
+______________________________
+## MOBILE - APLICAÇÃO FUNCIONANDO
+
+Link - https://youtu.be/F8WO-qH2dY4?si=198QWeBaz8eMAUdX
+
+______________________________
 
 **⚙️ Configuração de Ambiente**<br>
 
